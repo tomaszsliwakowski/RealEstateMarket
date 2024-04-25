@@ -1,8 +1,10 @@
+import "./styles/app.scss";
+
 function App() {
   return (
-    <>
-      <div>hi</div>
-    </>
+    <div className="layout">
+      <div></div>
+    </div>
   );
 }
 
