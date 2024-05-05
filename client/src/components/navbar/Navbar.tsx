@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./navbar.scss";
+import { Link } from "react-router-dom";
 
 type MenuRoutesType = {
   link: string;
@@ -20,21 +21,21 @@ export default function Navbar() {
   return (
     <nav>
       <div className="left">
-        <a className="logo" href="/">
+        <Link className="logo" to="/">
           <img src="./logo.png" alt="logo" />
           <span>RealEstateMarket</span>
-        </a>
+        </Link>
         {menuRoutes.slice(0, 4).map((item: MenuRoutesType, id: number) => (
-          <a key={id} href={item.link}>
+          <Link key={id} to={item.link}>
             {item.name}
-          </a>
+          </Link>
         ))}
       </div>
       <div className="right">
-        <a href="/">Sign in</a>
-        <a className="register" href="/">
+        <Link to="/">Sign in</Link>
+        <Link className="register" to="/">
           Sign up
-        </a>
+        </Link>
         <div className="menuSwitch">
           <img
             src="./menu.png"
@@ -44,9 +45,9 @@ export default function Navbar() {
         </div>
         <div className={open ? "menu active" : "menu"}>
           {menuRoutes.map((item: MenuRoutesType, id: number) => (
-            <a key={id} href={item.link}>
+            <Link key={id} to={item.link}>
               {item.name}
-            </a>
+            </Link>
           ))}
         </div>
       </div>
