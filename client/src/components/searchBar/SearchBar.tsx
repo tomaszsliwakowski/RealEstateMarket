@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./searchBar.scss";
+import Button from "../button/button";
 
 type QueryType = {
   type: string;
@@ -51,9 +52,7 @@ export default function SearchBar() {
           max={10000000}
           placeholder="Max Price"
         />
-        <button>
-          <img src="./search.png" alt="search" />
-        </button>
+        <Button imgSrc="./search.png" />
       </form>
     </div>
   );

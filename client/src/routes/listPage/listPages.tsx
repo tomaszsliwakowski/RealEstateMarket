@@ -1,7 +1,7 @@
 import Card from "../../components/card/card";
 import Filter from "../../components/filter/filter";
 import Map from "../../components/map/map";
-import { listData } from "../../lig/data";
+import { listData } from "../../lib/data";
 import "./listPage.scss";
 
 export type exampleDataType = {

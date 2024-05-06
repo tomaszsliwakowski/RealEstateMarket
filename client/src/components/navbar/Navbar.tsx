@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./navbar.scss";
 import { Link } from "react-router-dom";
+import { userData } from "../../lib/data";
 
 type MenuRoutesType = {
   link: string;
@@ -18,6 +19,7 @@ const menuRoutes: MenuRoutesType[] = [
 
 export default function Navbar() {
   const [open, setOpen] = useState<boolean>(false);
+  const user = userData;
   return (
     <nav>
       <div className="left">
@@ -32,10 +34,22 @@ export default function Navbar() {
         ))}
       </div>
       <div className="right">
-        <Link to="/">Sign in</Link>
-        <Link className="register" to="/">
-          Sign up
-        </Link>
+        {user ? (
+          <div className="user">
+            <img src={userData.img} alt="user image" />
+            <span>{userData.name}</span>
+            <Link to={"/profile"} className="profile">
+              Profile
+            </Link>
+          </div>
+        ) : (
+          <>
+            <Link to="/">Sign in</Link>
+            <Link className="register" to="/">
+              Sign up
+            </Link>
+          </>
+        )}
         <div className="menuSwitch">
           <img
             src="./menu.png"

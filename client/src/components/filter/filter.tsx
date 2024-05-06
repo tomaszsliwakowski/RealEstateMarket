@@ -1,3 +1,4 @@
+import Button from "../button/button";
 import "./filter.scss";
 
 export default function Filter() {
@@ -53,9 +54,7 @@ export default function Filter() {
           <label htmlFor="bedroom">Bedroom</label>
           <input type="text" id="bedroom" name="bedroom" placeholder="any" />
         </div>
-        <button>
-          <img src="/search.png" alt="" />
-        </button>
+        <Button imgSrc="./search.png" />
       </div>
     </div>
   );
