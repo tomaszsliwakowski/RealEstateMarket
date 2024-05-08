@@ -20,7 +20,7 @@ type UserType = {
 
 export const register = async (req: Request, res: Response) => {
   const { username, email, password }: LoginRequestData = req.body;
-
+  console.log({ username, email, password });
   try {
     const hashedPassword: string = await bccrypt.hash(password, 10);
     const newUser: UserType = await prisma.user.create({

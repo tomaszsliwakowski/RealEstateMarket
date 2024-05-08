@@ -18,7 +18,7 @@ app.use(cookieParser());
 app.use(
   cors({
     credentials: true,
-    origin: "http://localhost:3000",
+    origin: process.env.CLIENT_URL,
   })
 );
 
@@ -29,5 +29,5 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoute);
 
 app.listen(port, () => {
-  return console.log(`Express is listening at http://localhost:${port}`);
+  return console.log(`Server is listening at http://localhost:${port}`);
 });

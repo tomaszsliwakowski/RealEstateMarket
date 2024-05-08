@@ -1,7 +1,7 @@
 @import "../../styles/app.scss";
 @import "../../styles/responsive.scss";
 
-.login {
+.register {
   height: 100%;
   display: flex;
 
@@ -64,11 +64,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-
     @include md {
       display: none;
     }
-
     img {
       width: 100%;
     }
