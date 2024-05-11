@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import "./navbar.scss";
 import { Link } from "react-router-dom";
-import { userData } from "../../lib/data";
+import { AuthContext } from "../../context/authContext";
 
 type MenuRoutesType = {
   link: string;
@@ -19,7 +19,7 @@ const menuRoutes: MenuRoutesType[] = [
 
 export default function Navbar() {
   const [open, setOpen] = useState<boolean>(false);
-  const user = userData;
+  const { currentUser } = useContext(AuthContext);
   return (
     <nav>
       <div className="left">
@@ -34,18 +34,18 @@ export default function Navbar() {
         ))}
       </div>
       <div className="right">
-        {user ? (
+        {currentUser ? (
           <div className="user">
-            <img src={userData.img} alt="user image" />
-            <span>{userData.name}</span>
+            <img src={currentUser.avatar || "./noavatar.jpg"} alt="avatar" />
+            <span>{currentUser.username}</span>
             <Link to={"/profile"} className="profile">
               Profile
             </Link>
           </div>
         ) : (
           <>
-            <Link to="/">Sign in</Link>
-            <Link className="register" to="/">
+            <Link to="/login">Sign in</Link>
+            <Link className="register" to="/register">
               Sign up
             </Link>
           </>

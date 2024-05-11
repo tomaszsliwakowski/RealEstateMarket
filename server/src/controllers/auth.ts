@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import bccrypt from "bcrypt";
 import prisma from "../../lib/prisma";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload, verify } from "jsonwebtoken";
 
 type LoginRequestData = {
   username: string;
@@ -14,16 +14,16 @@ type UserType = {
   email: string;
   username: string;
   password: string;
-  avatar: string;
+  avatar?: string | null;
   createdAt: Date;
 };
 
 export const register = async (req: Request, res: Response) => {
   const { username, email, password }: LoginRequestData = req.body;
-  console.log({ username, email, password });
+
   try {
     const hashedPassword: string = await bccrypt.hash(password, 10);
-    const newUser: UserType = await prisma.user.create({
+    await prisma.user.create({
       data: {
         username,
         email,
@@ -64,6 +64,26 @@ export const login = async (req: Request, res: Response) => {
       .json(userInfo);
   } catch (error) {
     res.status(500).json({ message: "Failed to login!" });
+  }
+};
+
+type CookieType = {
+  id: string;
+  isAdmin: boolean;
+  iat: number;
+  exp: number;
+};
+
+export const getLogged = async (req: Request, res: Response) => {
+  try {
+    const { token } = req.cookies;
+    const cookie = verify(token, process.env.JWT_SECRET_KEY) as CookieType;
+    if (!cookie) res.status(500);
+    const user = await prisma.user.findUnique({ where: { id: cookie.id } });
+    const { password, ...userInfo } = user;
+    res.status(200).json(userInfo);
+  } catch (error) {
+    res.status(500);
   }
 };
 

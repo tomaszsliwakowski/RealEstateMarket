@@ -109,6 +109,7 @@ nav {
       background-color: $primary-color;
       cursor: pointer;
       transition: all 0.4s;
+
       &:hover {
         background: darken($primary-color, 8%);
       }
