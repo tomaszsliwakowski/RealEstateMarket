@@ -11,3 +11,7 @@ export const registerUrl = `/auth/register`;
 export const loginUrl = `/auth/login`;
 export const logOutUrl = "/auth/logout";
 export const loggedUrl = "/auth/logged";
+
+export async function updateUserUrl(id: string) {
+  return `/users/${id}`;
+}

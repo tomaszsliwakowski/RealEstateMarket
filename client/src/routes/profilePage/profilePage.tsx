@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Chat from "../../components/chat/chat";
 import List from "../../components/list/list";
 import useLogout from "./profileHelper";
@@ -12,7 +13,9 @@ export default function ProfilePage() {
         <div className="wrapper">
           <div className="title">
             <h1>User Information</h1>
-            <button>Update Profile</button>
+            <Link to="/profile/update">
+              <button>Update Profile</button>
+            </Link>
           </div>
           <div className="info">
             <span>

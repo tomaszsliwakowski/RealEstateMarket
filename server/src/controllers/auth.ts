@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import bccrypt from "bcrypt";
 import prisma from "../../lib/prisma";
-import jwt, { JwtPayload, verify } from "jsonwebtoken";
+import jwt, { verify } from "jsonwebtoken";
 
 type LoginRequestData = {
   username: string;

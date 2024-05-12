@@ -1,0 +1,67 @@
+@import "../../styles/app.scss";
+@import "../../styles/responsive.scss";
+
+.profileUpdatePage {
+  height: 100%;
+  display: flex;
+
+  .formContainer {
+    flex: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding: 15% 18%;
+      border-radius: 5%;
+      background-color: rgba(81, 191, 254, 0.438);
+      @include sm {
+        padding: 15%;
+      }
+
+      .item {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+
+        label {
+        }
+
+        input {
+          padding: 20px;
+          border-radius: 5px;
+          border: none;
+        }
+      }
+      button {
+        padding: 20px;
+        border-radius: 5px;
+        border: none;
+        background-color: $primary-color;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .sideContainer {
+    flex: 2;
+    background-color: #fcf5f3;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    @include md {
+      display: none;
+    }
+    .avatar {
+      width: 50%;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+  }
+}

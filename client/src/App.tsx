@@ -7,6 +7,7 @@ import SignlePage from "./routes/singlePage/signlePage";
 import LoginPage from "./routes/loginPage/loginPage";
 import ProfilePage from "./routes/profilePage/profilePage";
 import RegisterPage from "./routes/registerPage/registerPage";
+import ProfileUpdatePage from "./routes/profileUpdatePage/profileUpdatePage";
 
 function App() {
   const router = createBrowserRouter([
@@ -36,7 +37,10 @@ function App() {
     {
       path: "/",
       element: <RequireAuth />,
-      children: [{ path: "/profile", element: <ProfilePage /> }],
+      children: [
+        { path: "/profile", element: <ProfilePage /> },
+        { path: "/profile/update", element: <ProfileUpdatePage /> },
+      ],
     },
   ]);
 
