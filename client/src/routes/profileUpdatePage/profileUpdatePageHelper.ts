@@ -7,8 +7,15 @@ import apiRequest, { updateUserUrl } from "../../utils/apiRequest";
 export default function useUserUpdate() {
   const { currentUser, updateUser } = useContext(AuthContext);
   const [error, setError] = useState<string>("");
-  const [avatar, setAvatar] = useState([]);
+  const [avatar, setAvatar] = useState<string[] | string>(
+    currentUser?.avatar || ""
+  );
   const navigate = useNavigate();
+
+  const changeAvatar = (avatar: string) => {
+    setAvatar([avatar]);
+  };
+  console.log(avatar);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -34,5 +41,5 @@ export default function useUserUpdate() {
     }
   };
 
-  return { handleSubmit, currentUser, error, avatar };
+  return { handleSubmit, changeAvatar, currentUser, error, avatar };
 }

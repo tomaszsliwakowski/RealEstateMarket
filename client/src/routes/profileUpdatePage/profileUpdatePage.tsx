@@ -1,8 +1,10 @@
+import UploadWidget from "../../components/uploadWidget/UploadWidget";
 import "./profileUpdatePage.scss";
 import useUserUpdate from "./profileUpdatePageHelper";
 
 export default function ProfileUpdatePage() {
-  const { handleSubmit, currentUser, error, avatar } = useUserUpdate();
+  const { handleSubmit, changeAvatar, currentUser, error, avatar } =
+    useUserUpdate();
   return (
     <div className="profileUpdatePage">
       <div className="formContainer">
@@ -39,6 +41,16 @@ export default function ProfileUpdatePage() {
           src={avatar[0] || currentUser?.avatar || "/noavatar.jpg"}
           alt="avatar"
           className="avatar"
+        />
+        <UploadWidget
+          uwConfig={{
+            cloudName: "dej3mkafm",
+            uploadPreset: "estate",
+            multiple: false,
+            maxImageFileSize: 2000000,
+            folder: "avatars",
+          }}
+          changeAvatar={changeAvatar}
         />
       </div>
     </div>
