@@ -15,15 +15,13 @@ type PROPS = {
 
 const CloudinaryScriptContext = createContext({});
 
-function CloudinaryUploadWidget({ uwConfig, changeAvatar }: PROPS) {
+function UploadWidget({ uwConfig, changeAvatar }: PROPS) {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    // Check if the script is already loaded
     if (!loaded) {
       const uwScript = document.getElementById("uw");
       if (!uwScript) {
-        // If not loaded, create and load the script
         const script = document.createElement("script");
         script.setAttribute("async", "");
         script.setAttribute("id", "uw");
@@ -31,7 +29,6 @@ function CloudinaryUploadWidget({ uwConfig, changeAvatar }: PROPS) {
         script.addEventListener("load", () => setLoaded(true));
         document.body.appendChild(script);
       } else {
-        // If already loaded, update the state
         setLoaded(true);
       }
     }
@@ -39,7 +36,7 @@ function CloudinaryUploadWidget({ uwConfig, changeAvatar }: PROPS) {
 
   const initializeCloudinaryWidget = () => {
     if (loaded) {
-      var myWidget = window.cloudinary.createUploadWidget(
+      let myWidget = window.cloudinary.createUploadWidget(
         uwConfig,
         (error: unknown, result: any) => {
           if (!error && result && result.event === "success") {
@@ -72,5 +69,5 @@ function CloudinaryUploadWidget({ uwConfig, changeAvatar }: PROPS) {
   );
 }
 
-export default CloudinaryUploadWidget;
+export default UploadWidget;
 export { CloudinaryScriptContext };

@@ -37,11 +37,7 @@ export default function ProfileUpdatePage() {
         </form>
       </div>
       <div className="sideContainer">
-        <img
-          src={avatar[0] || currentUser?.avatar || "/noavatar.jpg"}
-          alt="avatar"
-          className="avatar"
-        />
+        <img src={avatar || "/noavatar.jpg"} alt="avatar" className="avatar" />
         <UploadWidget
           uwConfig={{
             cloudName: "dej3mkafm",

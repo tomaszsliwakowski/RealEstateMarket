@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import authRoute from "./routes/auth";
 import userRoute from "./routes/user";
+import postRoute from "./routes/post";
 
 dotenv.config();
 
@@ -29,6 +30,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
+app.use("/api/posts", postRoute);
 
 app.listen(port, () => {
   return console.log(`Server is listening at http://localhost:${port}`);
