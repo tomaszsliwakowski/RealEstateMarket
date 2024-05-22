@@ -107,7 +107,12 @@
         border: 1px solid $primary-color;
         border-radius: 5px;
         cursor: pointer;
-
+        .true {
+          background-color: $primary-color;
+        }
+        .false {
+          background-color: white;
+        }
         img {
           width: 16px;
           height: 16px;

@@ -78,19 +78,26 @@
         }
       }
     }
-    button {
-      border: none;
-      cursor: pointer;
-      background-color: $primary-color;
+    a {
       flex: 1;
-      @include sm {
-        padding: 10px;
-        border-radius: 5px;
-      }
+      display: flex;
+      background-color: $primary-color;
+      justify-content: center;
+      align-items: center;
+      button {
+        border: none;
+        cursor: pointer;
+        background-color: $primary-color;
 
-      img {
-        width: 24px;
-        height: 24px;
+        @include sm {
+          padding: 10px;
+          border-radius: 5px;
+        }
+
+        img {
+          width: 24px;
+          height: 24px;
+        }
       }
     }
   }

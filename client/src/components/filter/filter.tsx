@@ -54,7 +54,9 @@ export default function Filter() {
           <label htmlFor="bedroom">Bedroom</label>
           <input type="text" id="bedroom" name="bedroom" placeholder="any" />
         </div>
-        <Button imgSrc="./search.png" />
+        <button>
+          <img src="./search.png" alt="search" />
+        </button>
       </div>
     </div>
   );

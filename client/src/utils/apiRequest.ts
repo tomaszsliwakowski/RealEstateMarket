@@ -15,3 +15,10 @@ export const loggedUrl = "/auth/logged";
 export async function updateUserUrl(id: string) {
   return `/users/${id}`;
 }
+
+//posts
+export const savePostUrl = "/users/save";
+
+export async function getPostsUrl(id: string) {
+  return `/posts/${id}`;
+}

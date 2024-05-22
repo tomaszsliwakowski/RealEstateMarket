@@ -1,9 +1,35 @@
 import prisma from "../../lib/prisma";
 import { Request, Response } from "express";
 
+type PostsQueryType = {
+  bedroom: string;
+  property: Property;
+  type: Type;
+  city: string;
+  minPrice: string;
+  maxPrice: string;
+};
+type Type = "buy" | "rent";
+
+type Property = "apartment" | "house" | "condo" | "land";
+
 export const getPosts = async (req: Request, res: Response) => {
+  const query = req.query;
+  const { bedroom, property, type, city, minPrice, maxPrice } =
+    query as PostsQueryType;
   try {
-    const posts = await prisma.post.findMany();
+    const posts = await prisma.post.findMany({
+      where: {
+        city: city || undefined,
+        type: type || undefined,
+        property: property || undefined,
+        bedroom: parseInt(bedroom) || undefined,
+        price: {
+          gte: parseInt(minPrice) || undefined,
+          lte: parseInt(maxPrice) || undefined,
+        },
+      },
+    });
     res.status(200).json(posts);
   } catch (error) {
     res.status(500).json({ message: "Failed to get posts" });
@@ -15,7 +41,7 @@ export const getPost = async (req: Request, res: Response) => {
     const post = await prisma.post.findUnique({
       where: { id },
       include: {
-        // postDetail: true,
+        //postDetail: true,
         user: { select: { username: true, avatar: true } },
       },
     });
