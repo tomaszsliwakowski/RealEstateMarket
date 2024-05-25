@@ -3,9 +3,10 @@ import Features from "../../components/singlePage/features";
 import Slider from "../../components/slider/slider";
 import { useLoaderData } from "react-router-dom";
 import DOMPurify from "dompurify";
+import { PostType } from "../../utils/loaders";
 
 export default function SinglePage() {
-  const post = useLoaderData();
+  const post = useLoaderData() as PostType;
 
   return (
     <div className="singlePage">
@@ -23,14 +24,14 @@ export default function SinglePage() {
                 <div className="price">$ {post.price}</div>
               </div>
               <div className="user">
-                <img src={post.user.img} alt="user" />
-                <span>{post.user.name}</span>
+                <img src={post.user.avatar || "./noavatar.jpg"} alt="user" />
+                <span>{post.user.username}</span>
               </div>
             </div>
             <div
               className="bottom"
               dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize(post.postDetail.desc),
+                __html: DOMPurify.sanitize(post?.postDetail?.desc),
               }}
             ></div>
           </div>

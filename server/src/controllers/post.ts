@@ -17,6 +17,7 @@ export const getPosts = async (req: Request, res: Response) => {
   const query = req.query;
   const { bedroom, property, type, city, minPrice, maxPrice } =
     query as PostsQueryType;
+
   try {
     const posts = await prisma.post.findMany({
       where: {
@@ -41,7 +42,7 @@ export const getPost = async (req: Request, res: Response) => {
     const post = await prisma.post.findUnique({
       where: { id },
       include: {
-        //postDetail: true,
+        postDetail: true,
         user: { select: { username: true, avatar: true } },
       },
     });
@@ -52,12 +53,15 @@ export const getPost = async (req: Request, res: Response) => {
 };
 export const addPost = async (req: Request, res: Response) => {
   const body = req.body;
+
   try {
     const newPost = await prisma.post.create({
       data: {
         ...body.postData,
         userId: body.userId,
-        postDetail: { create: body.postDetail },
+        postDetail: {
+          create: body.postDetail,
+        },
       },
     });
     res.status(200).json(newPost);

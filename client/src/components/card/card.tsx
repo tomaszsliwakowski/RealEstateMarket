@@ -1,16 +1,16 @@
 import { Link } from "react-router-dom";
 import "./card.scss";
-import { exampleDataType } from "../../routes/listPage/listPages";
+import { PostType } from "../../utils/loaders";
 
 type PROPS = {
-  item: exampleDataType;
+  item: PostType;
 };
 
 export default function Card({ item }: PROPS) {
   return (
     <div className="card">
       <Link to={`/${item.id}`} className="imageContainer">
-        <img src={item.img} alt="" />
+        <img src={item.images[0]} alt="image" />
       </Link>
       <div className="textContainer">
         <h2 className="title">
