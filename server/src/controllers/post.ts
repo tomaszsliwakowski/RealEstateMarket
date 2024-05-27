@@ -1,5 +1,6 @@
 import prisma from "../../lib/prisma";
 import { Request, Response } from "express";
+import { verify } from "jsonwebtoken";
 
 type PostsQueryType = {
   bedroom: string;
@@ -46,7 +47,22 @@ export const getPost = async (req: Request, res: Response) => {
         user: { select: { username: true, avatar: true } },
       },
     });
-    res.status(200).json(post);
+    const token = req.cookies.token;
+    if (token) {
+      verify(token, process.env.JWT_SECRET_KEY, async (err, payload) => {
+        if (!err) {
+          const saved = await prisma.savedPost.findUnique({
+            where: {
+              userId_postId: {
+                postId: id,
+                userId: payload.id,
+              },
+            },
+          });
+          res.status(200).json({ ...post, isSaved: saved ? true : false });
+        }
+      });
+    }
   } catch (error) {
     res.status(500).json({ message: "Failed to get post" });
   }
