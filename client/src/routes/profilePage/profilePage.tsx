@@ -1,11 +1,24 @@
-import { Link } from "react-router-dom";
+import { Await, Link, useLoaderData } from "react-router-dom";
 import Chat from "../../components/chat/chat";
 import List from "../../components/list/list";
 import useLogout from "./profileHelper";
 import "./profilePage.scss";
+import { Suspense } from "react";
+import { ChatType, PostType } from "../../utils/loaders";
+
+type T = {
+  userPosts: PostType[];
+  savedPosts: PostType[];
+};
+
+type DataType = {
+  postResponse: Promise<T>;
+  chatResponse: Promise<ChatType[]>;
+};
 
 export default function ProfilePage() {
   const { handleLogout, currentUser } = useLogout();
+  const data = useLoaderData() as DataType;
 
   return (
     <div className="profilePage">
@@ -36,16 +49,38 @@ export default function ProfilePage() {
               <button>Create New Post</button>
             </Link>
           </div>
-          <List />
+          <Suspense fallback={<p>Loading...</p>}>
+            <Await
+              resolve={data.postResponse}
+              errorElement={<p>Error loading posts!</p>}
+            >
+              {(postResponse) => <List posts={postResponse.data.userPosts} />}
+            </Await>
+          </Suspense>
+
           <div className="title">
             <h1>Saved List</h1>
           </div>
-          <List />
+          <Suspense fallback={<p>Loading...</p>}>
+            <Await
+              resolve={data.postResponse}
+              errorElement={<p>Error loading posts!</p>}
+            >
+              {(postResponse) => <List posts={postResponse.data.savedPosts} />}
+            </Await>
+          </Suspense>
         </div>
       </div>
       <div className="chatContainer">
         <div className="wrapper">
-          <Chat />
+          <Suspense fallback={<p>Loading...</p>}>
+            <Await
+              resolve={data.chatResponse}
+              errorElement={<p>Error loading chats!</p>}
+            >
+              {(chatResponse) => <Chat chats={chatResponse.data} />}
+            </Await>
+          </Suspense>
         </div>
       </div>
     </div>

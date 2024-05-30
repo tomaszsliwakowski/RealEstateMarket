@@ -1,13 +1,17 @@
-import { listData } from "../../lib/data";
+import { PostType } from "../../utils/loaders";
 import Card from "../card/card";
 import "./list.scss";
 
-export default function List() {
+type PROPS = {
+  posts: PostType[];
+};
+
+export default function List({ posts }: PROPS) {
   return (
     <div className="list">
-      {listData.map((item) => (
-        <Card key={item.id} item={item} />
-      ))}
+      {posts.length > 0
+        ? posts.map((item) => <Card key={item.id} item={item} />)
+        : null}
     </div>
   );
 }

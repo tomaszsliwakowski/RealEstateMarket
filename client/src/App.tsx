@@ -8,7 +8,11 @@ import ProfilePage from "./routes/profilePage/profilePage";
 import RegisterPage from "./routes/registerPage/registerPage";
 import ProfileUpdatePage from "./routes/profileUpdatePage/profileUpdatePage";
 import NewPostPage from "./routes/newPostPage/newPostPage";
-import { listPageLoader, singlePageLoader } from "./utils/loaders";
+import {
+  listPageLoader,
+  profilePageLoader,
+  singlePageLoader,
+} from "./utils/loaders";
 import SinglePage from "./routes/singlePage/singlePage";
 
 function App() {
@@ -42,7 +46,11 @@ function App() {
       path: "/",
       element: <RequireAuth />,
       children: [
-        { path: "/profile", element: <ProfilePage /> },
+        {
+          path: "/profile",
+          element: <ProfilePage />,
+          loader: profilePageLoader,
+        },
         { path: "/profile/update", element: <ProfileUpdatePage /> },
         { path: "/add", element: <NewPostPage /> },
       ],

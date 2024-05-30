@@ -14,13 +14,30 @@ type Type = "buy" | "rent";
 
 type Property = "apartment" | "house" | "condo" | "land";
 
+export type PostType = {
+  id: string;
+  title: string;
+  price: number;
+  images: string[];
+  address: string;
+  city: string;
+  bedroom: number;
+  bathroom: number;
+  latitude: string;
+  longitude: string;
+  type: Type;
+  property: Property;
+  createdAt: Date;
+  userId: string;
+};
+
 export const getPosts = async (req: Request, res: Response) => {
   const query = req.query;
   const { bedroom, property, type, city, minPrice, maxPrice } =
     query as PostsQueryType;
 
   try {
-    const posts = await prisma.post.findMany({
+    const posts: PostType[] = await prisma.post.findMany({
       where: {
         city: city || undefined,
         type: type || undefined,
@@ -37,10 +54,18 @@ export const getPosts = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Failed to get posts" });
   }
 };
+
+type SavedType = {
+  id: string;
+  userId: string;
+  postId: string;
+  createdAt: Date;
+};
+
 export const getPost = async (req: Request, res: Response) => {
   const id: string = req.params.id;
   try {
-    const post = await prisma.post.findUnique({
+    const post: PostType = await prisma.post.findUnique({
       where: { id },
       include: {
         postDetail: true,
@@ -51,7 +76,7 @@ export const getPost = async (req: Request, res: Response) => {
     if (token) {
       verify(token, process.env.JWT_SECRET_KEY, async (err, payload) => {
         if (!err) {
-          const saved = await prisma.savedPost.findUnique({
+          const saved: SavedType = await prisma.savedPost.findUnique({
             where: {
               userId_postId: {
                 postId: id,
@@ -71,7 +96,7 @@ export const addPost = async (req: Request, res: Response) => {
   const body = req.body;
 
   try {
-    const newPost = await prisma.post.create({
+    const newPost: PostType = await prisma.post.create({
       data: {
         ...body.postData,
         userId: body.userId,
@@ -97,7 +122,7 @@ export const deletePost = async (req: Request, res: Response) => {
   const id: string = req.params.id;
   const userId = req.body.userId;
   try {
-    const post = await prisma.post.findUnique({ where: { id } });
+    const post: PostType = await prisma.post.findUnique({ where: { id } });
 
     if (post.userId !== userId) {
       return res.status(403).json({ message: "Not Authorized!" });

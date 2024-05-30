@@ -6,6 +6,8 @@ import bodyParser from "body-parser";
 import authRoute from "./routes/auth";
 import userRoute from "./routes/user";
 import postRoute from "./routes/post";
+import chatRoute from "./routes/chat";
+import messageRoute from "./routes/message";
 
 dotenv.config();
 
@@ -31,6 +33,8 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/posts", postRoute);
+app.use("/api/chat", chatRoute);
+app.use("/api/message", messageRoute);
 
 app.listen(port, () => {
   return console.log(`Server is listening at http://localhost:${port}`);

@@ -1,6 +1,7 @@
 import prisma from "../../lib/prisma";
 import { Request, Response } from "express";
 import bccrypt from "bcrypt";
+import { PostType } from "./post";
 
 type UserType = {
   id: string;
@@ -107,5 +108,24 @@ export const savePost = async (req: Request, res: Response) => {
     }
   } catch (error) {
     res.status(500).json({ message: "Failed to save post!" });
+  }
+};
+
+export const profilePosts = async (req: Request, res: Response) => {
+  const userId: string = req.body.userId;
+  try {
+    const userPosts: PostType[] = await prisma.post.findMany({
+      where: { userId },
+    });
+    const saved = await prisma.savedPost.findMany({
+      where: { userId },
+      include: {
+        post: true,
+      },
+    });
+    const savedPosts: PostType[] = saved.map((item) => item.post);
+    res.status(200).json({ userPosts, savedPosts });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to get profile posts!" });
   }
 };

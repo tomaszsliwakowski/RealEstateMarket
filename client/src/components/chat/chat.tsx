@@ -1,7 +1,12 @@
 import { useState } from "react";
 import "./chat.scss";
+import { ChatType } from "../../utils/loaders";
 
-export default function Chat() {
+type PROPS = {
+  chats: ChatType[];
+};
+
+export default function Chat({ chats }: PROPS) {
   const [chat, setChat] = useState<boolean | null>(true);
   return (
     <div className="chat">

@@ -10,7 +10,7 @@ export default function Card({ item }: PROPS) {
   return (
     <div className="card">
       <Link to={`/${item.id}`} className="imageContainer">
-        <img src={item.images[0]} alt="image" />
+        <img src={item.images?.length > 0 ? item.images[0] : ""} alt="image" />
       </Link>
       <div className="textContainer">
         <h2 className="title">
