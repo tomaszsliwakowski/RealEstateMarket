@@ -19,7 +19,8 @@
     "react-dom": "^18.2.0",
     "react-leaflet": "^4.2.1",
     "react-quill": "^2.0.0",
-    "react-router-dom": "^6.23.0"
+    "react-router-dom": "^6.23.0",
+    "timeago.js": "^4.0.2"
   },
   "devDependencies": {
     "@types/dompurify": "^3.0.5",

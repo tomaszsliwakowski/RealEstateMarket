@@ -22,7 +22,7 @@ export default function useRegister() {
     )
       return;
     try {
-      await apiRequest.post(registerUrl, { username, email, password });
+      await apiRequest.post("/auth/register", { username, email, password });
       navigate("/login");
     } catch (err: unknown) {
       const error = err as AxiosError;

@@ -21,7 +21,7 @@ export default function useLogin() {
     if (typeof username !== "string" || typeof password !== "string") return;
 
     try {
-      const res = await apiRequest.post(loginUrl, { username, password });
+      const res = await apiRequest.post("/auth/login", { username, password });
       updateUser(res.data);
       navigate("/");
     } catch (err: unknown) {

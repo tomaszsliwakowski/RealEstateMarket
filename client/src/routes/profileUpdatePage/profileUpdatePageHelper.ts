@@ -25,7 +25,7 @@ export default function useUserUpdate() {
 
     try {
       if (!currentUser || !avatar) return;
-      const res = await apiRequest.put(await updateUserUrl(currentUser?.id), {
+      const res = await apiRequest.put(`/users/${currentUser.id}`, {
         username,
         email,
         password,

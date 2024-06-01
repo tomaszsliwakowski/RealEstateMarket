@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import apiRequest, { logOutUrl } from "../../utils/apiRequest";
+import apiRequest from "../../utils/apiRequest";
 import { useContext } from "react";
 import { AuthContext } from "../../context/authContext";
 
@@ -8,7 +8,7 @@ export default function useLogout() {
   const navigate = useNavigate();
   const handleLogout = async () => {
     try {
-      await apiRequest.post(logOutUrl);
+      await apiRequest.post("/auth/logout");
       updateUser(null);
       navigate("/");
     } catch (error: unknown) {

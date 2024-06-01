@@ -1,5 +1,5 @@
 import { ReactNode, createContext, useEffect, useState } from "react";
-import apiRequest, { loggedUrl } from "../utils/apiRequest";
+import apiRequest from "../utils/apiRequest";
 
 export type UserType = {
   id: string;
@@ -35,7 +35,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const request = async () => {
       await apiRequest
-        .get(loggedUrl)
+        .get("/auth/logged")
         .then((res) => {
           updateUser(res.data);
           updateLaoding(false);

@@ -1,126 +1,74 @@
-import { useState } from "react";
 import "./chat.scss";
 import { ChatType } from "../../utils/loaders";
+import useChats from "./chatHelper";
+import { format } from "timeago.js";
 
 type PROPS = {
   chats: ChatType[];
 };
 
 export default function Chat({ chats }: PROPS) {
-  const [chat, setChat] = useState<boolean | null>(true);
+  const { chat, currentUser, handleOpenChat, closeChat, handleSubmit } =
+    useChats();
   return (
     <div className="chat">
       <div className="messages">
         <h1>Messages</h1>
-        <div className="message">
-          <img
-            src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-            alt=""
-          />
-          <span>John Doe</span>
-          <p>Lorem ipsum dolor sit amet...</p>
-        </div>
-        <div className="message">
-          <img
-            src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-            alt=""
-          />
-          <span>John Doe</span>
-          <p>Lorem ipsum dolor sit amet...</p>
-        </div>
-        <div className="message">
-          <img
-            src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-            alt=""
-          />
-          <span>John Doe</span>
-          <p>Lorem ipsum dolor sit amet...</p>
-        </div>
-        <div className="message">
-          <img
-            src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-            alt=""
-          />
-          <span>John Doe</span>
-          <p>Lorem ipsum dolor sit amet...</p>
-        </div>
-        <div className="message">
-          <img
-            src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-            alt=""
-          />
-          <span>John Doe</span>
-          <p>Lorem ipsum dolor sit amet...</p>
-        </div>
-        <div className="message">
-          <img
-            src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-            alt=""
-          />
-          <span>John Doe</span>
-          <p>Lorem ipsum dolor sit amet...</p>
-        </div>
+        {chats.map((el) => (
+          <div
+            className="message"
+            key={el.id}
+            style={{
+              backgroundColor:
+                currentUser && el.seenBy.includes(currentUser?.id)
+                  ? "white"
+                  : "",
+            }}
+            onClick={() => handleOpenChat(el.id, el.receiver)}
+          >
+            <img src={el.receiver?.avatar || "./noavatar.jpg"} alt="avatar" />
+            <span>{el.receiver?.username}</span>
+            <p>{el.lastMessage}</p>
+          </div>
+        ))}
       </div>
       {chat && (
         <div className="chatBox">
           <div className="top">
             <div className="user">
               <img
-                src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                alt=""
+                src={chat.receiver?.avatar || "./noavatar.jpg"}
+                alt="avatar"
               />
-              John Doe
+              {chat.receiver?.username}
             </div>
-            <span className="close" onClick={() => setChat(null)}>
+            <span className="close" onClick={() => closeChat(null)}>
               X
             </span>
           </div>
           <div className="center">
-            <div className="chatMessage">
-              <p>Lorem ipsum dolor sit amet</p>
-              <span>1 hour ago</span>
-            </div>
-            <div className="chatMessage own">
-              <p>Lorem ipsum dolor sit amet</p>
-              <span>1 hour ago</span>
-            </div>
-            <div className="chatMessage">
-              <p>Lorem ipsum dolor sit amet</p>
-              <span>1 hour ago</span>
-            </div>
-            <div className="chatMessage own">
-              <p>Lorem ipsum dolor sit amet</p>
-              <span>1 hour ago</span>
-            </div>
-            <div className="chatMessage">
-              <p>Lorem ipsum dolor sit amet</p>
-              <span>1 hour ago</span>
-            </div>
-            <div className="chatMessage own">
-              <p>Lorem ipsum dolor sit amet</p>
-              <span>1 hour ago</span>
-            </div>
-            <div className="chatMessage">
-              <p>Lorem ipsum dolor sit amet</p>
-              <span>1 hour ago</span>
-            </div>
-            <div className="chatMessage own">
-              <p>Lorem ipsum dolor sit amet</p>
-              <span>1 hour ago</span>
-            </div>
-            <div className="chatMessage">
-              <p>Lorem ipsum dolor sit amet</p>
-              <span>1 hour ago</span>
-            </div>
-            <div className="chatMessage own">
-              <p>Lorem ipsum dolor sit amet</p>
-              <span>1 hour ago</span>
-            </div>
+            {chat.messages.map((message) => (
+              <div
+                className="chatMessage"
+                key={message.id}
+                style={{
+                  alignSelf:
+                    message.userId === currentUser?.id
+                      ? "flex-end"
+                      : "flex-start",
+                  textAlign:
+                    message.userId === currentUser?.id ? "right" : "left",
+                }}
+              >
+                <p>{message.text}</p>
+                <span>{format(message.createdAt)}</span>
+              </div>
+            ))}
           </div>
-          <div className="bottom">
-            <textarea></textarea>
+          <form className="bottom" onSubmit={handleSubmit}>
+            <textarea name="text"></textarea>
             <button>Send</button>
-          </div>
+          </form>
         </div>
       )}
     </div>

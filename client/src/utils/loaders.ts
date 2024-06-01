@@ -40,12 +40,19 @@ export interface PostType {
   userId: string;
 }
 
+export type ReceiverType = {
+  id: string;
+  username: string;
+  avatar: string;
+};
+
 export type ChatType = {
   id: string;
   userIDs: string[];
   createdAt: Date;
   seenBy: string[];
   lastMessage: string;
+  receiver?: ReceiverType;
 };
 
 export const singlePageLoader = async ({ params }: PROPS) => {
