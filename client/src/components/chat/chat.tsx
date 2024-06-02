@@ -10,6 +10,7 @@ type PROPS = {
 export default function Chat({ chats }: PROPS) {
   const { chat, currentUser, handleOpenChat, closeChat, handleSubmit } =
     useChats();
+
   return (
     <div className="chat">
       <div className="messages">

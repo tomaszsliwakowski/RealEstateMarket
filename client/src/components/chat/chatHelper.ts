@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../../context/authContext";
 import apiRequest from "../../utils/apiRequest";
+import { AxiosError } from "axios";
 
 type ReceiverType = {
   id: string;
@@ -37,15 +38,29 @@ export default function useChats() {
       const res = await apiRequest("/chats/" + id);
       console.log(res);
       setChat({ ...res.data, receiver });
-    } catch (error) {
-      console.log(error);
+    } catch (err: unknown) {
+      const error = err as AxiosError;
+      const errorData = error.response?.data as any;
+      console.log(errorData);
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const text = formData.get("text");
+    if (!text || text === "") return;
     try {
-    } catch (error) {}
+      const res = await apiRequest.post("/messages/" + chat?.id, { text });
+      setChat((prev) =>
+        prev ? { ...prev, messages: [...prev?.messages, res.data] } : null
+      );
+      e.currentTarget.reset();
+    } catch (err: unknown) {
+      const error = err as AxiosError;
+      const errorData = error.response?.data as any;
+      console.log(errorData);
+    }
   };
 
   const closeChat = (action: null) => {

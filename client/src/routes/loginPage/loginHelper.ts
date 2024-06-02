@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import apiRequest, { loginUrl } from "../../utils/apiRequest";
+import apiRequest from "../../utils/apiRequest";
 import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/authContext";

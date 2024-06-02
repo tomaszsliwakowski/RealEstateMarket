@@ -1,5 +1,5 @@
 import { useState } from "react";
-import apiRequest, { registerUrl } from "../../utils/apiRequest";
+import apiRequest from "../../utils/apiRequest";
 import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 
