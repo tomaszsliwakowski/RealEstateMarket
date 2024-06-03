@@ -8,8 +8,14 @@ type PROPS = {
 };
 
 export default function Chat({ chats }: PROPS) {
-  const { chat, currentUser, handleOpenChat, closeChat, handleSubmit } =
-    useChats();
+  const {
+    chat,
+    currentUser,
+    handleOpenChat,
+    closeChat,
+    handleSubmit,
+    inputRef,
+  } = useChats();
 
   return (
     <div className="chat">
@@ -21,7 +27,8 @@ export default function Chat({ chats }: PROPS) {
             key={el.id}
             style={{
               backgroundColor:
-                currentUser && el.seenBy.includes(currentUser?.id)
+                (currentUser && el.seenBy.includes(currentUser?.id)) ||
+                chat?.id === el.id
                   ? "white"
                   : "",
             }}
@@ -48,26 +55,28 @@ export default function Chat({ chats }: PROPS) {
             </span>
           </div>
           <div className="center">
-            {chat.messages.map((message) => (
-              <div
-                className="chatMessage"
-                key={message.id}
-                style={{
-                  alignSelf:
-                    message.userId === currentUser?.id
-                      ? "flex-end"
-                      : "flex-start",
-                  textAlign:
-                    message.userId === currentUser?.id ? "right" : "left",
-                }}
-              >
-                <p>{message.text}</p>
-                <span>{format(message.createdAt)}</span>
-              </div>
-            ))}
+            {chat.messages?.length > 0
+              ? chat.messages.map((message) => (
+                  <div
+                    className="chatMessage"
+                    key={message.id}
+                    style={{
+                      alignSelf:
+                        message.userId === currentUser?.id
+                          ? "flex-end"
+                          : "flex-start",
+                      textAlign:
+                        message.userId === currentUser?.id ? "right" : "left",
+                    }}
+                  >
+                    <p>{message.text}</p>
+                    <span>{format(message.createdAt)}</span>
+                  </div>
+                ))
+              : null}
           </div>
           <form className="bottom" onSubmit={handleSubmit}>
-            <textarea name="text"></textarea>
+            <textarea ref={inputRef} name="text"></textarea>
             <button>Send</button>
           </form>
         </div>

@@ -1,7 +1,8 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "../../context/authContext";
 import apiRequest from "../../utils/apiRequest";
 import { AxiosError } from "axios";
+import { SocketContext } from "../../context/socketContext";
 
 type ReceiverType = {
   id: string;
@@ -29,18 +30,18 @@ type ChatType = {
 export default function useChats() {
   const [chat, setChat] = useState<ChatType | null>(null);
   const { currentUser } = useContext(AuthContext);
-
+  const { socket } = useContext(SocketContext) as any;
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   const handleOpenChat = async (
     id: string,
     receiver: ReceiverType | undefined
   ) => {
     try {
       const res = await apiRequest("/chats/" + id);
-      console.log(res);
       setChat({ ...res.data, receiver });
     } catch (err: unknown) {
       const error = err as AxiosError;
-      const errorData = error.response?.data as any;
+      const errorData = error.response?.data as string;
       console.log(errorData);
     }
   };
@@ -49,16 +50,18 @@ export default function useChats() {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const text = formData.get("text");
-    if (!text || text === "") return;
+    if (!text || text === "" || !chat) return;
     try {
-      const res = await apiRequest.post("/messages/" + chat?.id, { text });
+      const res = await apiRequest.post("/messages/" + chat.id, { text });
       setChat((prev) =>
         prev ? { ...prev, messages: [...prev?.messages, res.data] } : null
       );
-      e.currentTarget.reset();
+      if (inputRef.current) {
+        inputRef.current.value = "";
+      }
     } catch (err: unknown) {
       const error = err as AxiosError;
-      const errorData = error.response?.data as any;
+      const errorData = error.response?.data as string;
       console.log(errorData);
     }
   };
@@ -67,5 +70,36 @@ export default function useChats() {
     setChat(action);
   };
 
-  return { chat, currentUser, handleOpenChat, closeChat, handleSubmit };
+  useEffect(() => {
+    const read = async () => {
+      try {
+        await apiRequest.put("/chats/read/" + chat?.id);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    if (chat && socket) {
+      socket.on("getMessage", (data: MessageType) => {
+        if (chat.id === data.chatId) {
+          setChat((prev) =>
+            prev ? { ...prev, messages: [...prev.messages, data] } : null
+          );
+          read();
+        }
+      });
+    }
+    return () => {
+      socket.off("getMessage");
+    };
+  }, [socket, chat]);
+
+  return {
+    chat,
+    currentUser,
+    handleOpenChat,
+    closeChat,
+    handleSubmit,
+    inputRef,
+  };
 }

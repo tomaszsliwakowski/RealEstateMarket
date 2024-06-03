@@ -36,7 +36,7 @@ app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/posts", postRoute);
 app.use("/api/chats", chatRoute);
-app.use("/api/message", messageRoute);
+app.use("/api/messages", messageRoute);
 
 app.listen(port, () => {
   return console.log(`Server is listening at http://localhost:${port}`);
@@ -44,15 +44,11 @@ app.listen(port, () => {
 
 const io = new Server({
   cors: {
-    origin: "http://localhost:6000",
+    origin: "http://localhost:3000",
   },
 });
 
 io.on("connection", (socket) => {
-  socket.on("test", (data) => {
-    console.log(data);
-  });
-
   socket.on("newUser", (userId) => {
     addUser(userId, socket.id);
   });

@@ -46,6 +46,14 @@ export type ReceiverType = {
   avatar: string;
 };
 
+export type MessageType = {
+  id: string;
+  text: string;
+  userId: string;
+  chatId: string;
+  createdAt: Date;
+};
+
 export type ChatType = {
   id: string;
   userIDs: string[];
@@ -53,6 +61,7 @@ export type ChatType = {
   seenBy: string[];
   lastMessage: string;
   receiver?: ReceiverType;
+  messages?: MessageType[];
 };
 
 export const singlePageLoader = async ({ params }: PROPS) => {

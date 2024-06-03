@@ -1,7 +1,7 @@
 import prisma from "../../lib/prisma";
 import { Request, Response } from "express";
 
-type MessageType = {
+export type MessageType = {
   id: string;
   text: string;
   userId: string;
@@ -9,13 +9,6 @@ type MessageType = {
   createdAt: Date;
 };
 
-export const getMessage = async (req: Request, res: Response) => {
-  try {
-    res.status(200).json();
-  } catch (error) {
-    res.status(500).json({ message: "" });
-  }
-};
 export const addMessage = async (req: Request, res: Response) => {
   const userId: string = req.body.userId;
   const chatId: string = req.params.chatId;

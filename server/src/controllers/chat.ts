@@ -6,6 +6,14 @@ type ReceiverType = {
   username: string;
   avatar: string;
 };
+
+export type MessageType = {
+  id: string;
+  text: string;
+  userId: string;
+  chatId: string;
+  createdAt: Date;
+};
 type ChatType = {
   id: string;
   userIDs: string[];
@@ -13,10 +21,12 @@ type ChatType = {
   seenBy: string[];
   lastMessage: string;
   receiver?: ReceiverType;
+  message?: MessageType[];
 };
 
 export const getChats = async (req: Request, res: Response) => {
   const userId: string = req.body.userId;
+
   try {
     const chats: ChatType[] = await prisma.chat.findMany({
       where: {
@@ -25,6 +35,7 @@ export const getChats = async (req: Request, res: Response) => {
         },
       },
     });
+
     for (const chat of chats) {
       const receiverId = chat.userIDs.find((id) => id !== userId);
 
@@ -51,9 +62,27 @@ export const getChat = async (req: Request, res: Response) => {
   try {
     const chat: ChatType = await prisma.chat.findUnique({
       where: {
-        id,
+        id: req.params.id,
         userIDs: {
           hasSome: [userId],
+        },
+      },
+      include: {
+        messages: {
+          orderBy: {
+            createdAt: "asc",
+          },
+        },
+      },
+    });
+
+    await prisma.chat.update({
+      where: {
+        id: id,
+      },
+      data: {
+        seenBy: {
+          push: [userId],
         },
       },
     });
