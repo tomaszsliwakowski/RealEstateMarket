@@ -15,6 +15,7 @@ export default function Chat({ chats }: PROPS) {
     closeChat,
     handleSubmit,
     inputRef,
+    messageEndRef,
   } = useChats();
 
   return (
@@ -74,6 +75,7 @@ export default function Chat({ chats }: PROPS) {
                   </div>
                 ))
               : null}
+            <div ref={messageEndRef}></div>
           </div>
           <form className="bottom" onSubmit={handleSubmit}>
             <textarea ref={inputRef} name="text"></textarea>

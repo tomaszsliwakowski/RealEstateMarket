@@ -32,6 +32,16 @@ export default function useChats() {
   const { currentUser } = useContext(AuthContext);
   const { socket } = useContext(SocketContext) as any;
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const messageEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!messageEndRef) return;
+    messageEndRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+    });
+  }, [chat]);
+
   const handleOpenChat = async (
     id: string,
     receiver: ReceiverType | undefined
@@ -101,5 +111,6 @@ export default function useChats() {
     closeChat,
     handleSubmit,
     inputRef,
+    messageEndRef,
   };
 }
